@@ -1,25 +1,46 @@
+import fetch from '@system.fetch'
+import device from '@system.device'
+
+var deviceInfo = {};
+
 var project = 'api', version = 'v1';
 
 export default {
-    getHomeData(params,success,fail){
-        let defaultParams = { //默认值
-            channel: 4, //频道(1-男频，2-女频 ，4-出版物)
-            offset: 0,
-            count: 10
-        }
-        params = Object.assign(defaultParams,params)
-        this.get('public/homepage',params,success,fail)
+    headers:{
+        uid: 0,
+        app: 'ebook', //要么不填，要么只能填这个
+        os: deviceInfo.osVersionName,
+        brand: deviceInfo.brand,
+        device_model: deviceInfo.model,
+        screen_size: deviceInfo.screenWidth+'*'+deviceInfo.screenHeight,
+        imei: deviceInfo.device
+    }
+    getListData(){
+        let self = this;
+        if(self.listData.noMore) return;
+        this.get('public/homepage',self.listData.params,(res)=>{
+            let recommendations = res.recommendations;
+            self.listData.params.offset += self.listData.params.count;
+            if(self.listData.params.offset>=res.total || recommendations.length==0) self.listData.noMore = true;
+
+            recommendations.forEach((element, index)=> {
+                if(element.template=='AD') recommendations.splice(index,1);
+            });
+            self.bookArr = self.bookArr.concat(recommendations);
+        },(err)=>{
+            console.log('请求出错: '+err)
+        })
     },
     get(url,params,success,fail){
-        this.$app.$http.get(`${project}/${version}/`+url, params)
-        .then(function (response) {
-          console.log(response,url);
-          success && success(response);
+        fetch.fetch({
+            url:url,
+            data:params,
+            header:{},
+            method:'GET',
+            success: success,
+            fail: fail,
+            complete:function(){}
         })
-        .catch(function (error) {
-          console.log(error);
-          fail && fail(error);
-        });
     },
     post(url,params,success,fail){
         this.$app.$http.post(`${project}/${version}/`+url, params)

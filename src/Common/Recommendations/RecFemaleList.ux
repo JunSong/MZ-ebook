@@ -1,0 +1,94 @@
+<import name="RecBlock" src="./RecBlock"></import>
+<template>
+        <list class="item-list" onscrollbottom="getListData">
+            <list-item type="productLeft" for="bookArr" class="item-list-item">
+                <RecBlock blocktitle="{{$item.title}}" books={{$item.books}} template="{{$item.template}}"></RecBlock>
+            </list-item>
+            <list-item type="loadStatus" class="load-status">
+                <progress type="circular" show="{{!listData.noMore}}"></progress>
+                <text show="{{!listData.noMore}}">加载更多</text>
+            </list-item>
+        </list>
+</template>
+<style lang="less">
+.load-status{
+    display: flex;
+    justify-content: center;
+    margin: 5px;
+    progress{
+        margin-right: 20px;
+        font-size: 48px;
+    }
+    text{
+        font-size: 48px;
+    }
+}
+</style>
+<script>
+var project = 'api', version = 'v1';
+export default {
+    props: ['startload'],
+    data: {
+        listData: {
+            params: {
+                channel: 2,
+                offset: 0,
+                count: 10,
+            },
+            noMore: false
+        },
+        bookArr: []
+    },
+    onInit(){
+        let self = this;
+        // self.listData.params.channel = self.channel;
+        self.$watch('startload','loadStatusChange')
+    },
+    loadStatusChange(){
+        let self = this;
+        if(self.startload){
+            self.requestOnReady(()=>{
+                self.getListData();
+            })
+        }
+    },
+    requestOnReady:function(fn){
+        let self = this;
+        if(self.$app.$http){
+            fn && fn();
+        }else{
+            setTimeout(()=>{
+                self.requestOnReady.call(self,fn);
+            },200)
+        }
+    },
+    getListData(){
+        let self = this;
+        if(self.listData.noMore) return;
+        this.get('public/homepage',self.listData.params,(res)=>{
+            let recommendations = res.recommendations;
+            self.listData.params.offset += self.listData.params.count;
+            if(self.listData.params.offset>=res.total || recommendations.length==0) self.listData.noMore = true;
+
+            recommendations.forEach((element, index)=> {
+                if(element.template=='AD') recommendations.splice(index,1);
+            });
+            self.bookArr = self.bookArr.concat(recommendations);
+        },(err)=>{
+            console.log('请求出错: '+err)
+        })
+    },
+    get(url,params,success,fail){
+        this.$app.$http.get(`${project}/${version}/`+url, params)
+        .then(function (response) {
+        //   console.log(JSON.stringify(response),url);
+          console.log(response,url);
+          success && success(response.data.value);
+        })
+        .catch(function (error) {
+          console.log(error);
+          fail && fail(error);
+        });
+    },
+}
+</script>

@@ -63,11 +63,28 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 14);
+/******/ 	return __webpack_require__(__webpack_require__.s = 15);
 /******/ })
 /************************************************************************/
 /******/ ([
-/* 0 */,
+/* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var $app_template$ = __webpack_require__(17)
+var $app_style$ = __webpack_require__(18)
+var $app_script$ = __webpack_require__(19)
+
+$app_define$('@app-component/recblock', [], function($app_require$, $app_exports$, $app_module$){
+     $app_script$($app_module$, $app_exports$, $app_require$)
+     if ($app_exports$.__esModule && $app_exports$.default) {
+            $app_module$.exports = $app_exports$.default
+        }
+     $app_module$.exports.template = $app_template$
+     $app_module$.exports.style = $app_style$
+})
+
+
+/***/ }),
 /* 1 */,
 /* 2 */,
 /* 3 */,
@@ -81,13 +98,16 @@
 /* 11 */,
 /* 12 */,
 /* 13 */,
-/* 14 */
+/* 14 */,
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(15)
-var $app_template$ = __webpack_require__(19)
-var $app_style$ = __webpack_require__(20)
-var $app_script$ = __webpack_require__(21)
+__webpack_require__(16)
+__webpack_require__(23)
+__webpack_require__(27)
+var $app_template$ = __webpack_require__(31)
+var $app_style$ = __webpack_require__(32)
+var $app_script$ = __webpack_require__(33)
 
 $app_define$('@app-component/index', [], function($app_require$, $app_exports$, $app_module$){
      $app_script$($app_module$, $app_exports$, $app_require$)
@@ -102,14 +122,15 @@ $app_bootstrap$('@app-component/index',{ packagerVersion: '0.0.5'})
 
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var $app_template$ = __webpack_require__(16)
-var $app_style$ = __webpack_require__(17)
-var $app_script$ = __webpack_require__(18)
+__webpack_require__(0)
+var $app_template$ = __webpack_require__(20)
+var $app_style$ = __webpack_require__(21)
+var $app_script$ = __webpack_require__(22)
 
-$app_define$('@app-component/recblockgrid', [], function($app_require$, $app_exports$, $app_module$){
+$app_define$('@app-component/rechomelist', [], function($app_require$, $app_exports$, $app_module$){
      $app_script$($app_module$, $app_exports$, $app_require$)
      if ($app_exports$.__esModule && $app_exports$.default) {
             $app_module$.exports = $app_exports$.default
@@ -120,7 +141,7 @@ $app_define$('@app-component/recblockgrid', [], function($app_require$, $app_exp
 
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -238,7 +259,7 @@ module.exports = {
 }
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -845,7 +866,7 @@ module.exports = {
 }
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports) {
 
 module.exports = function(module, exports, $app_require$){'use strict';
@@ -870,7 +891,630 @@ exports.default = {
 };}
 
 /***/ }),
-/* 19 */
+/* 20 */
+/***/ (function(module, exports) {
+
+module.exports = {
+  "type": "list",
+  "attr": {},
+  "classList": [
+    "item-list"
+  ],
+  "events": {
+    "scrollbottom": "getListData"
+  },
+  "children": [
+    {
+      "type": "list-item",
+      "attr": {
+        "type": "productLeft"
+      },
+      "repeat": function () {return this.bookArr},
+      "classList": [
+        "item-list-item"
+      ],
+      "children": [
+        {
+          "type": "recblock",
+          "attr": {
+            "blocktitle": function () {return this.$item.title},
+            "books": function () {return this.$item.books},
+            "template": function () {return this.$item.template}
+          }
+        }
+      ]
+    },
+    {
+      "type": "list-item",
+      "attr": {
+        "type": "loadStatus"
+      },
+      "classList": [
+        "load-status"
+      ],
+      "children": [
+        {
+          "type": "progress",
+          "attr": {
+            "type": "circular",
+            "show": function () {return !this.listData.noMore}
+          }
+        },
+        {
+          "type": "text",
+          "attr": {
+            "show": function () {return !this.listData.noMore},
+            "value": "加载更多"
+          }
+        }
+      ]
+    }
+  ]
+}
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports) {
+
+module.exports = {
+  ".load-status": {
+    "display": "flex",
+    "justifyContent": "center",
+    "marginTop": "5px",
+    "marginRight": "5px",
+    "marginBottom": "5px",
+    "marginLeft": "5px"
+  },
+  ".load-status progress": {
+    "marginRight": "20px",
+    "fontSize": "48px",
+    "_meta": {
+      "ruleDef": [
+        {
+          "t": "a",
+          "n": "class",
+          "i": false,
+          "a": "element",
+          "v": "load-status"
+        },
+        {
+          "t": "d"
+        },
+        {
+          "t": "t",
+          "n": "progress"
+        }
+      ]
+    }
+  },
+  ".load-status text": {
+    "fontSize": "48px",
+    "_meta": {
+      "ruleDef": [
+        {
+          "t": "a",
+          "n": "class",
+          "i": false,
+          "a": "element",
+          "v": "load-status"
+        },
+        {
+          "t": "d"
+        },
+        {
+          "t": "t",
+          "n": "text"
+        }
+      ]
+    }
+  }
+}
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports) {
+
+module.exports = function(module, exports, $app_require$){'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var project = 'api',
+    version = 'v1';
+exports.default = {
+    props: ['startload'],
+    data: {
+        listData: {
+            params: {
+                channel: 4,
+                offset: 0,
+                count: 10
+            },
+            noMore: false
+        },
+        bookArr: []
+    },
+    onInit: function onInit() {
+        var self = this;
+
+        self.$watch('startload', 'loadStatusChange');
+    },
+    loadStatusChange: function loadStatusChange() {
+        var self = this;
+        if (self.startload) {
+            self.requestOnReady(function () {
+                self.getListData();
+            });
+        }
+    },
+
+    requestOnReady: function requestOnReady(fn) {
+        var self = this;
+        if (self.$app.$http) {
+            fn && fn();
+        } else {
+            setTimeout(function () {
+                self.requestOnReady.call(self, fn);
+            }, 200);
+        }
+    },
+    getListData: function getListData() {
+        var self = this;
+        if (self.listData.noMore) return;
+        this.get('public/homepage', self.listData.params, function (res) {
+            var recommendations = res.recommendations;
+            self.listData.params.offset += self.listData.params.count;
+            if (self.listData.params.offset >= res.total || recommendations.length == 0) self.listData.noMore = true;
+
+            recommendations.forEach(function (element, index) {
+                if (element.template == 'AD') recommendations.splice(index, 1);
+            });
+            self.bookArr = self.bookArr.concat(recommendations);
+        }, function (err) {
+            console.log('请求出错: ' + err);
+        });
+    },
+    get: function get(url, params, success, fail) {
+        this.$app.$http.get(project + '/' + version + '/' + url, params).then(function (response) {
+            console.log(response, url);
+            success && success(response.data.value);
+        }).catch(function (error) {
+            console.log(error);
+            fail && fail(error);
+        });
+    }
+};}
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(0)
+var $app_template$ = __webpack_require__(24)
+var $app_style$ = __webpack_require__(25)
+var $app_script$ = __webpack_require__(26)
+
+$app_define$('@app-component/recmalelist', [], function($app_require$, $app_exports$, $app_module$){
+     $app_script$($app_module$, $app_exports$, $app_require$)
+     if ($app_exports$.__esModule && $app_exports$.default) {
+            $app_module$.exports = $app_exports$.default
+        }
+     $app_module$.exports.template = $app_template$
+     $app_module$.exports.style = $app_style$
+})
+
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports) {
+
+module.exports = {
+  "type": "list",
+  "attr": {},
+  "classList": [
+    "item-list"
+  ],
+  "events": {
+    "scrollbottom": "getListData"
+  },
+  "children": [
+    {
+      "type": "list-item",
+      "attr": {
+        "type": "productLeft"
+      },
+      "repeat": function () {return this.bookArr},
+      "classList": [
+        "item-list-item"
+      ],
+      "children": [
+        {
+          "type": "recblock",
+          "attr": {
+            "blocktitle": function () {return this.$item.title},
+            "books": function () {return this.$item.books},
+            "template": function () {return this.$item.template}
+          }
+        }
+      ]
+    },
+    {
+      "type": "list-item",
+      "attr": {
+        "type": "loadStatus"
+      },
+      "classList": [
+        "load-status"
+      ],
+      "children": [
+        {
+          "type": "progress",
+          "attr": {
+            "type": "circular",
+            "show": function () {return !this.listData.noMore}
+          }
+        },
+        {
+          "type": "text",
+          "attr": {
+            "show": function () {return !this.listData.noMore},
+            "value": "加载更多"
+          }
+        }
+      ]
+    }
+  ]
+}
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports) {
+
+module.exports = {
+  ".load-status": {
+    "display": "flex",
+    "justifyContent": "center",
+    "marginTop": "5px",
+    "marginRight": "5px",
+    "marginBottom": "5px",
+    "marginLeft": "5px"
+  },
+  ".load-status progress": {
+    "marginRight": "20px",
+    "fontSize": "48px",
+    "_meta": {
+      "ruleDef": [
+        {
+          "t": "a",
+          "n": "class",
+          "i": false,
+          "a": "element",
+          "v": "load-status"
+        },
+        {
+          "t": "d"
+        },
+        {
+          "t": "t",
+          "n": "progress"
+        }
+      ]
+    }
+  },
+  ".load-status text": {
+    "fontSize": "48px",
+    "_meta": {
+      "ruleDef": [
+        {
+          "t": "a",
+          "n": "class",
+          "i": false,
+          "a": "element",
+          "v": "load-status"
+        },
+        {
+          "t": "d"
+        },
+        {
+          "t": "t",
+          "n": "text"
+        }
+      ]
+    }
+  }
+}
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports) {
+
+module.exports = function(module, exports, $app_require$){'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var project = 'api',
+    version = 'v1';
+exports.default = {
+    props: ['startload'],
+    data: {
+        listData: {
+            params: {
+                channel: 1,
+                offset: 0,
+                count: 10
+            },
+            noMore: false
+        },
+        bookArr: []
+    },
+    onInit: function onInit() {
+        var self = this;
+
+        self.$watch('startload', 'loadStatusChange');
+    },
+    loadStatusChange: function loadStatusChange() {
+        var self = this;
+        if (self.startload) {
+            self.requestOnReady(function () {
+                self.getListData();
+            });
+        }
+    },
+
+    requestOnReady: function requestOnReady(fn) {
+        var self = this;
+        if (self.$app.$http) {
+            fn && fn();
+        } else {
+            setTimeout(function () {
+                self.requestOnReady.call(self, fn);
+            }, 200);
+        }
+    },
+    getListData: function getListData() {
+        var self = this;
+        if (self.listData.noMore) return;
+        this.get('public/homepage', self.listData.params, function (res) {
+            var recommendations = res.recommendations;
+            self.listData.params.offset += self.listData.params.count;
+            if (self.listData.params.offset >= res.total || recommendations.length == 0) self.listData.noMore = true;
+
+            recommendations.forEach(function (element, index) {
+                if (element.template == 'AD') recommendations.splice(index, 1);
+            });
+            self.bookArr = self.bookArr.concat(recommendations);
+        }, function (err) {
+            console.log('请求出错: ' + err);
+        });
+    },
+    get: function get(url, params, success, fail) {
+        this.$app.$http.get(project + '/' + version + '/' + url, params).then(function (response) {
+            console.log(response, url);
+            success && success(response.data.value);
+        }).catch(function (error) {
+            console.log(error);
+            fail && fail(error);
+        });
+    }
+};}
+
+/***/ }),
+/* 27 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(0)
+var $app_template$ = __webpack_require__(28)
+var $app_style$ = __webpack_require__(29)
+var $app_script$ = __webpack_require__(30)
+
+$app_define$('@app-component/recfemalelist', [], function($app_require$, $app_exports$, $app_module$){
+     $app_script$($app_module$, $app_exports$, $app_require$)
+     if ($app_exports$.__esModule && $app_exports$.default) {
+            $app_module$.exports = $app_exports$.default
+        }
+     $app_module$.exports.template = $app_template$
+     $app_module$.exports.style = $app_style$
+})
+
+
+/***/ }),
+/* 28 */
+/***/ (function(module, exports) {
+
+module.exports = {
+  "type": "list",
+  "attr": {},
+  "classList": [
+    "item-list"
+  ],
+  "events": {
+    "scrollbottom": "getListData"
+  },
+  "children": [
+    {
+      "type": "list-item",
+      "attr": {
+        "type": "productLeft"
+      },
+      "repeat": function () {return this.bookArr},
+      "classList": [
+        "item-list-item"
+      ],
+      "children": [
+        {
+          "type": "recblock",
+          "attr": {
+            "blocktitle": function () {return this.$item.title},
+            "books": function () {return this.$item.books},
+            "template": function () {return this.$item.template}
+          }
+        }
+      ]
+    },
+    {
+      "type": "list-item",
+      "attr": {
+        "type": "loadStatus"
+      },
+      "classList": [
+        "load-status"
+      ],
+      "children": [
+        {
+          "type": "progress",
+          "attr": {
+            "type": "circular",
+            "show": function () {return !this.listData.noMore}
+          }
+        },
+        {
+          "type": "text",
+          "attr": {
+            "show": function () {return !this.listData.noMore},
+            "value": "加载更多"
+          }
+        }
+      ]
+    }
+  ]
+}
+
+/***/ }),
+/* 29 */
+/***/ (function(module, exports) {
+
+module.exports = {
+  ".load-status": {
+    "display": "flex",
+    "justifyContent": "center",
+    "marginTop": "5px",
+    "marginRight": "5px",
+    "marginBottom": "5px",
+    "marginLeft": "5px"
+  },
+  ".load-status progress": {
+    "marginRight": "20px",
+    "fontSize": "48px",
+    "_meta": {
+      "ruleDef": [
+        {
+          "t": "a",
+          "n": "class",
+          "i": false,
+          "a": "element",
+          "v": "load-status"
+        },
+        {
+          "t": "d"
+        },
+        {
+          "t": "t",
+          "n": "progress"
+        }
+      ]
+    }
+  },
+  ".load-status text": {
+    "fontSize": "48px",
+    "_meta": {
+      "ruleDef": [
+        {
+          "t": "a",
+          "n": "class",
+          "i": false,
+          "a": "element",
+          "v": "load-status"
+        },
+        {
+          "t": "d"
+        },
+        {
+          "t": "t",
+          "n": "text"
+        }
+      ]
+    }
+  }
+}
+
+/***/ }),
+/* 30 */
+/***/ (function(module, exports) {
+
+module.exports = function(module, exports, $app_require$){'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var project = 'api',
+    version = 'v1';
+exports.default = {
+    props: ['startload'],
+    data: {
+        listData: {
+            params: {
+                channel: 2,
+                offset: 0,
+                count: 10
+            },
+            noMore: false
+        },
+        bookArr: []
+    },
+    onInit: function onInit() {
+        var self = this;
+
+        self.$watch('startload', 'loadStatusChange');
+    },
+    loadStatusChange: function loadStatusChange() {
+        var self = this;
+        if (self.startload) {
+            self.requestOnReady(function () {
+                self.getListData();
+            });
+        }
+    },
+
+    requestOnReady: function requestOnReady(fn) {
+        var self = this;
+        if (self.$app.$http) {
+            fn && fn();
+        } else {
+            setTimeout(function () {
+                self.requestOnReady.call(self, fn);
+            }, 200);
+        }
+    },
+    getListData: function getListData() {
+        var self = this;
+        if (self.listData.noMore) return;
+        this.get('public/homepage', self.listData.params, function (res) {
+            var recommendations = res.recommendations;
+            self.listData.params.offset += self.listData.params.count;
+            if (self.listData.params.offset >= res.total || recommendations.length == 0) self.listData.noMore = true;
+
+            recommendations.forEach(function (element, index) {
+                if (element.template == 'AD') recommendations.splice(index, 1);
+            });
+            self.bookArr = self.bookArr.concat(recommendations);
+        }, function (err) {
+            console.log('请求出错: ' + err);
+        });
+    },
+    get: function get(url, params, success, fail) {
+        this.$app.$http.get(project + '/' + version + '/' + url, params).then(function (response) {
+            console.log(response, url);
+            success && success(response.data.value);
+        }).catch(function (error) {
+            console.log(error);
+            fail && fail(error);
+        });
+    }
+};}
+
+/***/ }),
+/* 31 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -884,6 +1528,9 @@ module.exports = {
       "type": "tabs",
       "attr": {
         "index": "1"
+      },
+      "events": {
+        "change": "tabsChange"
       },
       "children": [
         {
@@ -949,61 +1596,10 @@ module.exports = {
               ],
               "children": [
                 {
-                  "type": "list",
-                  "attr": {},
-                  "classList": [
-                    "item-list"
-                  ],
-                  "events": {
-                    "scrollbottom": "getHomeData"
-                  },
-                  "children": [
-                    {
-                      "type": "list-item",
-                      "attr": {
-                        "type": "productLeft"
-                      },
-                      "repeat": function () {return this.publication},
-                      "classList": [
-                        "item-list-item"
-                      ],
-                      "children": [
-                        {
-                          "type": "recblockgrid",
-                          "attr": {
-                            "blocktitle": function () {return this.$item.title},
-                            "books": function () {return this.$item.books},
-                            "template": function () {return this.$item.template}
-                          }
-                        }
-                      ]
-                    },
-                    {
-                      "type": "list-item",
-                      "attr": {
-                        "type": "loadStatus"
-                      },
-                      "classList": [
-                        "load-status"
-                      ],
-                      "children": [
-                        {
-                          "type": "progress",
-                          "attr": {
-                            "type": "circular",
-                            "show": function () {return !this.homeData.noMore}
-                          }
-                        },
-                        {
-                          "type": "text",
-                          "attr": {
-                            "show": function () {return !this.homeData.noMore},
-                            "value": "加载更多"
-                          }
-                        }
-                      ]
-                    }
-                  ]
+                  "type": "rechomelist",
+                  "attr": {
+                    "startload": function () {return this.homeLoadStatus}
+                  }
                 }
               ]
             },
@@ -1015,23 +1611,10 @@ module.exports = {
               ],
               "children": [
                 {
-                  "type": "list",
-                  "attr": {},
-                  "classList": [
-                    "item-list"
-                  ],
-                  "children": [
-                    {
-                      "type": "list-item",
-                      "attr": {
-                        "type": "item"
-                      },
-                      "repeat": function () {return this.MaleChannel},
-                      "classList": [
-                        "item-list-item"
-                      ]
-                    }
-                  ]
+                  "type": "recmalelist",
+                  "attr": {
+                    "startload": function () {return this.maleLoadStatus}
+                  }
                 }
               ]
             },
@@ -1043,23 +1626,10 @@ module.exports = {
               ],
               "children": [
                 {
-                  "type": "list",
-                  "attr": {},
-                  "classList": [
-                    "item-list"
-                  ],
-                  "children": [
-                    {
-                      "type": "list-item",
-                      "attr": {
-                        "type": "item"
-                      },
-                      "repeat": function () {return this.FemaleChannel},
-                      "classList": [
-                        "item-list-item"
-                      ]
-                    }
-                  ]
+                  "type": "recfemalelist",
+                  "attr": {
+                    "startload": function () {return this.femaleLoadStatus}
+                  }
                 }
               ]
             }
@@ -1071,7 +1641,7 @@ module.exports = {
 }
 
 /***/ }),
-/* 20 */
+/* 32 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -1195,7 +1765,7 @@ module.exports = {
 }
 
 /***/ }),
-/* 21 */
+/* 33 */
 /***/ (function(module, exports) {
 
 module.exports = function(module, exports, $app_require$){'use strict';
@@ -1218,7 +1788,10 @@ module.exports = {
                 count: 10
             },
             noMore: false
-        }
+        },
+        homeLoadStatus: true,
+        maleLoadStatus: false,
+        femaleLoadStatus: false
     }},
     onInit: function onInit(e) {
         var self = this;
@@ -1229,6 +1802,23 @@ module.exports = {
             self.getHomeData();
         });
     },
+    tabsChange: function tabsChange(e) {
+        var self = this;
+        var index = e.index;
+        switch (index) {
+            case 1:
+                break;
+            case 2:
+                self.maleLoadStatus = true;
+                break;
+            case 3:
+                self.femaleLoadStatus = true;
+                break;
+            default:
+                break;
+        }
+    },
+
     requestOnReady: function requestOnReady(fn) {
         var self = this;
         if (self.$app.$http) {

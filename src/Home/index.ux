@@ -1,8 +1,11 @@
-<import name="RecBlockGrid" src="../Common/Recommendations/RecommendBlockGrid"></import>
+<!-- <import name="RecBlockGrid" src="../Common/Recommendations/RecommendBlockGrid"></import> -->
 <!-- <import name="RecBlockList" src="../Common/Recommendations/RecommendBlockList"></import> -->
+<import name="RecHomeList" src="../Common/Recommendations/RecHomeList"></import>
+<import name="RecMaleList" src="../Common/Recommendations/RecMaleList"></import>
+<import name="RecFemaleList" src="../Common/Recommendations/RecFemaleList"></import>
 <template>
     <div class="container">
-        <tabs index="1">
+        <tabs index="1" onchange="tabsChange">
             <tab-bar class="tab-bar">
                 <text for="titles" tid="id" class="item-tabbar-text">{{$item}}</text>
             </tab-bar>
@@ -14,27 +17,13 @@
                     </list>
                 </div>
                 <div class="tab-group-content">
-                    <list class="item-list" onscrollbottom="getHomeData">
-                        <list-item type="productLeft" for="publication" class="item-list-item">
-                            <RecBlockGrid blocktitle="{{$item.title}}" books={{$item.books}} template="{{$item.template}}"></RecBlockGrid>
-                        </list-item>
-                        <list-item type="loadStatus" class="load-status">
-                            <progress type="circular" show="{{!homeData.noMore}}"></progress>
-                            <text show="{{!homeData.noMore}}">加载更多</text>
-                        </list-item>
-                    </list>
+                    <RecHomeList startload={{homeLoadStatus}}></RecHomeList>
                 </div>
                 <div class="tab-group-content">
-                    <list class="item-list">
-                        <list-item type="item" for="MaleChannel" class="item-list-item">
-                        </list-item>
-                    </list>
+                    <RecMaleList startload={{maleLoadStatus}}></RecMaleList>
                 </div>
                 <div class="tab-group-content">
-                    <list class="item-list">
-                        <list-item type="item" for="FemaleChannel" class="item-list-item">
-                        </list-item>
-                    </list>
+                    <RecFemaleList startload={{femaleLoadStatus}}></RecFemaleList>
                 </div>
             </tab-content>
         </tabs>
@@ -123,6 +112,9 @@ module.exports = {
             },
             noMore: false
         },
+        homeLoadStatus: true,
+        maleLoadStatus: false,
+        femaleLoadStatus: false
     },
     onInit: function (e) {
         let self = this;
@@ -132,6 +124,22 @@ module.exports = {
         self.requestOnReady(()=>{
             self.getHomeData();
         }) 
+    },
+    tabsChange(e){
+        let self = this;
+        let index = e.index;
+        switch(index){
+            case 1:
+                break;
+            case 2:
+                self.maleLoadStatus = true;
+                break;
+            case 3:
+                self.femaleLoadStatus = true;
+                break;
+            default:
+                break;
+        }
     },
     requestOnReady:function(fn){
         let self = this;

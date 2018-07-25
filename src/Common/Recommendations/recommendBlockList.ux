@@ -1,0 +1,137 @@
+<template>
+        <div class="bookBlocks">
+            <!-- <block if="{{template=='LIST'}}"> -->
+                <div class="bookBlockTitle">
+                    <text if="{{blocktitle}}">{{blocktitle}}</text>
+                    <div class="title_border"></div>
+                </div>
+                <div class="bookListCont">
+                    <div class="bookItem" for="books">
+                        <image src="{{$item.image}}" class="bookCover"></image>
+                        <!-- <div class="bookInfo">
+                            <div class="bookName"><text>{{$item.name}}</text></div>
+                            <div class="bookAuthor"><text>{{$item.author}}</text></div>
+                            <div class="bookDesc"><text>{{$item.summary}}</text></div>
+                        </div>                     -->
+                    </div>
+                </div>
+            <!-- </block> -->
+        </div>
+    </template>
+    <style lang="less">
+    @greenColor: #04bfce;
+    .bookBlocks{
+        flex-direction: column;
+        justify-content: center;
+        .bookBlockTitle{
+            width: 100%;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text{
+                font-size: 44px;
+                color: #000000;
+                height: 50px;
+            }
+            .title_border{
+                width: 56px;
+                height: 8px;
+                background-color: @greenColor;
+                margin-top: 24px;
+                margin-bottom: 44px;
+            }
+        }
+    }
+    .blockCont{
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        width: 984px;
+        margin-left: 48px;
+    }
+    .bookCover{
+        width: 264px;
+        height: 378px;
+    }
+    .bookBlock{
+        flex-direction: column;
+        width: 264px;
+        flex-grow: 1;
+        flex-shrink: 0;
+        margin-bottom: 44px;
+        .bookNameWrap{
+            flex-direction: column;
+            height: 100px;
+            justify-content: flex-start;
+        }
+        .bookName{
+            font-size: 40px;
+            text-align: left;
+            width: 264px;
+            color: #000000;
+            text-overflow: ellipsis;
+            lines: 2;
+        }
+        .bookAuthor{
+            width: 264px;
+            font-size: 36px;
+            color: #9b9b9b;
+            text-overflow: ellipsis;
+            lines: 1;
+        }
+    }
+    
+    .bookListCont{
+        flex-direction: column;
+        width: 984px;
+        margin-left: 48px;
+        .bookItem{
+            flex-direction: row;
+            width: 100%;
+            margin-bottom: 64px;
+            image{
+                flex-grow: 1;
+                flex-shrink: 0;
+                margin-right: 50px;
+                width: 200px;
+                height: 300px;
+            }
+            .bookInfo{
+                flex-direction: column;
+                align-items: flex-start;
+                width: 724px;
+                .bookName{
+                    text{
+                        font-size: 50px;
+                        color: #000000;
+                        lines: 1;
+                        text-overflow: ellipsis;
+                    }
+                }
+                .bookAuthor{
+                    text{
+                        font-size: 36px;
+                        color: #686868;
+                        lines: 1;
+                        text-overflow: ellipsis;
+                    }                
+                }
+                .bookDesc{
+                    text{
+                        font-size: 36px;
+                        color: #9c9c9c;
+                        lines: 2;
+                        text-overflow: ellipsis;
+                    }                
+                }
+            }
+        }
+    }
+    </style>
+    <script>
+    export default {
+        props: ['blocktitle','books', 'template'],
+        data: {
+        }
+    }
+    </script>

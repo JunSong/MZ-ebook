@@ -1,0 +1,175 @@
+<import name="RecBlockGrid" src="../Common/Recommendations/RecommendBlockGrid"></import>
+<!-- <import name="RecBlockList" src="../Common/Recommendations/RecommendBlockList"></import> -->
+<template>
+    <div class="container">
+        <tabs index="1">
+            <tab-bar class="tab-bar">
+                <text for="titles" tid="id" class="item-tabbar-text">{{$item}}</text>
+            </tab-bar>
+            <tab-content class="tab-content">
+                <div class="tab-group-content">
+                    <list class="item-list">
+                        <list-item type="item" for="bookshelf" class="item-list-item">
+                        </list-item>
+                    </list>
+                </div>
+                <div class="tab-group-content">
+                    <list class="item-list" onscrollbottom="getHomeData">
+                        <list-item type="productLeft" for="publication" class="item-list-item">
+                            <RecBlockGrid blocktitle="{{$item.title}}" books={{$item.books}} template="{{$item.template}}"></RecBlockGrid>
+                        </list-item>
+                        <list-item type="loadStatus" class="load-status">
+                            <progress type="circular" show="{{!homeData.noMore}}"></progress>
+                            <text show="{{!homeData.noMore}}">加载更多</text>
+                        </list-item>
+                    </list>
+                </div>
+                <div class="tab-group-content">
+                    <list class="item-list">
+                        <list-item type="item" for="MaleChannel" class="item-list-item">
+                        </list-item>
+                    </list>
+                </div>
+                <div class="tab-group-content">
+                    <list class="item-list">
+                        <list-item type="item" for="FemaleChannel" class="item-list-item">
+                        </list-item>
+                    </list>
+                </div>
+            </tab-content>
+        </tabs>
+    </div>
+</template>
+<style lang="less">
+@import '../Common/css/base.css';
+@greenColor: #04bfce;
+@tabTextColor: #666666;
+@tabBarBorder: #e5e5e5;
+
+.tab-bar text{
+    font-size: 42px;
+}
+
+.container {
+    flex-direction: column;
+    flex: 1;
+}
+
+.tab-bar {
+        height: 100px;
+        border-bottom-width: 2px;
+        border-color: @tabBarBorder;
+    }
+
+    .tab-content {
+        flex: 1;
+        background-color: #ffffff;
+    }
+
+    .tab-group-content {
+        padding-top: 24px    
+    }
+
+    .item-list-item {
+        padding: 62px 0 0;
+        border-bottom-width: 1px;
+        border-color: #BBBBBB;
+    }
+
+    .item-list-item-text {
+        font-size: 32px;
+        color: #908C8C;
+    }
+
+    .item-tabbar-text {
+        color: @tabTextColor;
+		height: 100px;
+        text-align: center;
+    }
+
+    .item-tabbar-text:active {
+        color: @greenColor;
+        border-bottom-width: 4px;
+        border-color: @greenColor;
+    }
+    .load-status{
+        display: flex;
+        justify-content: center;
+        margin: 5px;
+        progress{
+            margin-right: 20px;
+            font-size: 48px;
+        }
+        text{
+            font-size: 48px;
+        }
+    }
+</style>
+<script>
+    // import service from '../Common/js/Request.js';
+    var project = 'api', version = 'v1';
+module.exports = {
+    data: {
+        titles: ['书架', '出版物', '男生小说', '女生小说'],
+        bookshelf: [],
+        publication: [],
+        MaleChannel: [],
+        FemaleChannel: [],
+        homeData: {
+            params: {
+                channel: 4,
+                offset: 0,
+                count: 10,
+            },
+            noMore: false
+        },
+    },
+    onInit: function (e) {
+        let self = this;
+        self.$page.setTitleBar({
+            text: '顶部选项卡'
+        });
+        self.requestOnReady(()=>{
+            self.getHomeData();
+        }) 
+    },
+    requestOnReady:function(fn){
+        let self = this;
+        if(self.$app.$http){
+            fn && fn();
+        }else{
+            setTimeout(()=>{
+                self.requestOnReady.call(self,fn);
+            },200)
+        }
+    },
+    getHomeData(){
+        let self = this;
+        if(self.homeData.noMore) return;
+        this.get('public/homepage',self.homeData.params,(res)=>{
+            let recommendations = res.recommendations;
+            self.homeData.params.offset += self.homeData.params.count;
+            if(self.homeData.params.offset>=res.total || recommendations.length==0) self.homeData.noMore = true;
+
+            recommendations.forEach((element, index)=> {
+                if(element.template=='AD') recommendations.splice(index,1);
+            });
+            self.publication = self.publication.concat(recommendations);
+        },(err)=>{
+            console.log('请求出错: '+err)
+        })
+    },
+    get(url,params,success,fail){
+        this.$app.$http.get(`${project}/${version}/`+url, params)
+        .then(function (response) {
+        //   console.log(JSON.stringify(response),url);
+          console.log(response,url);
+          success && success(response.data.value);
+        })
+        .catch(function (error) {
+          console.log(error);
+          fail && fail(error);
+        });
+    },
+}
+</script>

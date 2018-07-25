@@ -1,0 +1,52 @@
+<script>
+  /**
+   * 应用级别的配置，供所有页面公用
+   */
+  import util from './util'
+  var fetch = require("@system.fetch")
+  import device from '@system.device'
+  var Fly = require("flyio/dist/npm/hap")
+  var fly = new Fly(fetch)
+  fly.config.baseURL = "https://ebook.meizu.com/"
+
+  var deviceInfo = {};
+  
+  export default {
+    showMenu: util.showMenu,
+    createShortcut: util.createShortcut,
+    onCreate(){
+      let self = this;
+      device.getInfo({
+        success: function (ret) {
+          Object.assign(deviceInfo,ret);
+          device.getId({
+            type: ['device', 'user'],
+            success: function (data) {
+              Object.assign(deviceInfo,data);
+              //添加请求拦截器
+              fly.interceptors.request.use((request)=>{
+                  //给所有请求添加自定义header
+                  Object.assign(request.headers,{
+                    uid: 0,
+                    app: 'ebook', //要么不填，要么只能填这个
+                    os: deviceInfo.osVersionName,
+                    brand: deviceInfo.brand,
+                    device_model: deviceInfo.model,
+                    screen_size: deviceInfo.screenWidth+'*'+deviceInfo.screenHeight,
+                    imei: deviceInfo.device
+                  })
+                
+                  //可以显式返回request, 也可以不返回，没有返回值时拦截器中默认返回request
+                  return request;
+              });
+              self.$http = fly;
+            },
+            fail: function (data, code) {
+              console.log(`handling fail, code = ${code}`)
+            }
+          })
+        }
+      })
+    }
+  }
+</script>
